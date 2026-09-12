@@ -6,38 +6,50 @@ export default class ProductDetails {
     this.product = {};
     this.dataSource = dataSource;
   }
+
   async init() {
-    // 1. pide los datos del producto usando el dataSource
+    // 1. Fetch the product data
     this.product = await this.dataSource.findProductById(this.productId);
 
-    // 2. renderiza el HTML del producto (esto lo construimos en el próximo paso)
+    // 2. Render the data to the screen
     this.renderProductDetails();
 
-    // 3. engancha el botón "Add to Cart"
+    // 3. Add the listener for the Add to Cart button
+    // .bind(this) is REQUIRED here so the button knows which product to add
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
   }
+
   addProductToCart() {
     const cartItems = getLocalStorage("so-cart") || [];
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
   }
+
   renderProductDetails() {
-    this.productDetailsTemplate(this.product);
+    productDetailsTemplate(this.product);
   }
-  productDetailsTemplate(product) {
-    document.querySelector('h2').textContent = product.Brand.Name;
-    document.querySelector('h3').textContent = product.NameWithoutBrand;
+}
 
-    const productImage = document.getElementById('productImage');
-    productImage.src = product.Image;
-    productImage.alt = product.NameWithoutBrand;
+// This function fills the empty HTML placeholders with JSON data
+function productDetailsTemplate(product) {
+  // Update the Brand and Name
+  document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h3").textContent = product.NameWithoutBrand;
 
-    document.getElementById('productPrice').textContent = product.FinalPrice;
-    document.getElementById('productColor').textContent = product.Colors[0].ColorName;
-    document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
+  // Update the Image
+  const productImage = document.getElementById("productImage");
+  productImage.src = product.Image;
+  productImage.alt = product.NameWithoutBrand;
 
-    document.getElementById('addToCart').dataset.id = product.Id;
-  }
+  // Update Price, Color, and Description
+  document.getElementById("productPrice").textContent = product.FinalPrice;
+  document.getElementById("productColor").textContent =
+    product.Colors[0].ColorName;
+  document.getElementById("productDesc").innerHTML =
+    product.DescriptionHtmlSimple;
+
+  // Update the data-id on the button
+  document.getElementById("addToCart").dataset.id = product.Id;
 }
