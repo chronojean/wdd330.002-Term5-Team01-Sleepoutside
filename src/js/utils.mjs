@@ -28,3 +28,21 @@ export function getParam(param) {
   const product = urlParams.get(param);
   return product;
 }
+
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart");
+  const cart = document.querySelector(".cart");
+
+  if (!cart) return;
+
+  let cartCount = cart.querySelector(".cart-count");
+
+  if (!cartCount) {
+    cartCount = document.createElement("span");
+    cartCount.classList.add("cart-count");
+    cart.appendChild(cartCount);
+  }
+
+  cartCount.textContent = cartItems.length;
+  cartCount.hidden = cartItems.length === 0;
+}
