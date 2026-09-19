@@ -282,3 +282,54 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+.product-categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.product-categories a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.product-categories img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.category-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  font-size: 5rem;
+  line-height: 1;
+  transform: rotate(-45deg);
+}
+
+.hammock-symbol {
+  font-size: 6rem;
+  transform: none;
+}
+
+.product-categories a:hover {
+  color: #bc4f07;
+}
+
+@media screen and (max-width: 600px) {
+  .product-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
