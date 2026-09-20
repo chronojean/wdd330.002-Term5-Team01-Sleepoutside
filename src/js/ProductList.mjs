@@ -1,8 +1,9 @@
 function productCardTemplate(product) {
-  const imagePath = product.Images.PrimaryMedium;
+  const imagePath = product.Image.replace("../", "");
+
   return `
     <li class="product-card">
-      <a href="/product_pages/index.html?product=${product.Id}">
+      <a href="product_pages/index.html?product=${product.Id}">
         <img
           src="${imagePath}"
           alt="${product.NameWithoutBrand}"
@@ -22,10 +23,16 @@ export default class ProductList {
     this.listElement = listElement;
   }
 
-  async init() {
-    const products = await this.dataSource.getData();
-    this.renderList(products);
-  }
+ async init() {
+  const products = await this.dataSource.getData();
+  const featuredIds = ["880RR", "985RF", "985PR", "344YJ"];
+
+  const displayedProducts = featuredIds
+    .map((id) => products.find((product) => product.Id === id))
+    .filter((product) => product);
+
+  this.renderList(displayedProducts);
+}
 
   renderList(products) {
     this.listElement.innerHTML = products
