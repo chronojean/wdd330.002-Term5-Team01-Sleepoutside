@@ -1,4 +1,8 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  updateCartCount,
+} from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -12,6 +16,7 @@ export default class ProductDetails {
 
     // 2. renderiza el HTML del producto (esto lo construimos en el próximo paso)
     this.renderProductDetails();
+    updateCartCount();
 
     // 3. engancha el botón "Add to Cart"
     document
@@ -22,19 +27,20 @@ export default class ProductDetails {
     const cartItems = getLocalStorage("so-cart") || [];
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
+    updateCartCount();
   }
   renderProductDetails() {
     this.productDetailsTemplate(this.product);
   }
   productDetailsTemplate(product) {
-    document.querySelector('h2').textContent = product.Brand.Name;
-    document.querySelector('h3').textContent = product.NameWithoutBrand;
+    document.querySelector("h3").textContent = product.Brand.Name;
+    document.querySelector("h2").textContent = product.NameWithoutBrand;
 
-    const productImage = document.getElementById('productImage');
-    productImage.src = product.Image;
+   const productImage = document.getElementById("productImage");
+    productImage.src = product.Images.PrimaryLarge;
     productImage.alt = product.NameWithoutBrand;
 
-    document.getElementById('productPrice').textContent = product.FinalPrice;
+    document.getElementById("productPrice").textContent = `$${product.FinalPrice}`;
     document.getElementById('productColor').textContent = product.Colors[0].ColorName;
     document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
 
