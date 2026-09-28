@@ -90,9 +90,30 @@ function cartItemTemplate(item, index) {
       </div>
 
       <p class="cart-card__price">$${itemTotal}</p>
+
+      <button
+        class="remove-from-cart"
+        data-index="${index}"
+        aria-label="Remove ${item.Name} from cart"
+        type="button"
+      >X</button>
     </li>
   `;
 }
+
+document.querySelector(".product-list").addEventListener("click", (event) => {
+  const button = event.target.closest(".remove-from-cart");
+  if (!button) return;
+
+  const cartItems = getLocalStorage("so-cart") || [];
+  const index = Number(button.dataset.index);
+
+  if (!Number.isInteger(index) || index < 0 || index >= cartItems.length) return;
+
+  cartItems.splice(index, 1);
+  setLocalStorage("so-cart", cartItems);
+  renderCartContents();
+});
 
 loadHeaderFooter();
 renderCartContents();
